@@ -33,6 +33,28 @@ $ make install
 
 ## Unix port
 
+Build with standard readline, patch:
+```
+--- a/ports/unix/Makefile
++++ b/ports/unix/Makefile
+@@ -90,6 +90,8 @@ ifeq ($(MICROPY_USE_READLINE),1)
+ INC +=  -I$(TOP)/lib/mp-readline
+ CFLAGS_MOD += -DMICROPY_USE_READLINE=1
+ LIB_SRC_C_EXTRA += mp-readline/readline.c
++else
++LDFLAGS_MOD += -lreadline
+ endif
+
+--- a/ports/unix/mpconfigport.mk
++++ b/ports/unix/mpconfigport.mk
+@@ -6,7 +6,7 @@ MICROPY_FORCE_32BIT = 0
+ # This variable can take the following values:
+ #  0 - no readline, just simple stdin input
+ #  1 - use MicroPython version of readline
+-MICROPY_USE_READLINE = 1
++MICROPY_USE_READLINE = 0
+``` 
+
 You must add micropython to the environments PATH variable:
 ```bash
 $ export PATH="<path_to>/micropython/unix:$PATH"
